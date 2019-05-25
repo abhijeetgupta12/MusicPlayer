@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,8 +25,8 @@ import java.util.ArrayList;
 
 public class SongList extends AppCompatActivity {
 
-    ListView songlist;
-    String item[];
+    RecyclerView songlist;
+    static String item[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class SongList extends AppCompatActivity {
 
         getSupportActionBar().setTitle(R.string.mysongs);
 
-        songlist = findViewById(R.id.mySongList);//listview
+        songlist = findViewById(R.id.programmingList);//listview
         runtimePermission();
 
 
@@ -106,30 +108,8 @@ public class SongList extends AppCompatActivity {
             //Example ---- replacing song.mp3 with song
         }
 
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(SongList.this,android.R.layout.simple_list_item_1,item);
-        songlist.setAdapter(myAdapter);//setting the array on list
-
-
-        songlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {//Action performed on clicking the list
-
-
-                startActivity(new Intent(SongList.this,MainActivity.class)//sending song file array position of song selected and song name array
-                        .putExtra("song",mySong)
-                        .putExtra("pos",i)
-                        .putExtra("sName",item));
-
-                if(MainActivity.mediaPlayer!=null)
-                {
-                           MainActivity.mediaPlayer.stop();//if mediaplayer have a song then it stops as soon as the the next song gets selected
-
-                }
-            }
-        });
-
-
-
+        songlist.setLayoutManager(new LinearLayoutManager(this));
+        songlist.setAdapter(new AdapterForList(this,mySong));
 
     }
 

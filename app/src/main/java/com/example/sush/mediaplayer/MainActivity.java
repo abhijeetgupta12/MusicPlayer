@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("@@@","Hello");
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Now Playing");
 
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if(b!=null)//retrieving values from intent
         {
             position = b.getInt("pos", 0);
-            sName = b.getStringArray("sName");
+            sName = SongList.item;
             mySongs = (ArrayList)b.getParcelableArrayList("song");
         }
         marque.setText(sName[position]);
@@ -76,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
