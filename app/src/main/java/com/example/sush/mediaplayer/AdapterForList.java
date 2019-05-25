@@ -20,10 +20,12 @@ public class AdapterForList extends RecyclerView.Adapter<AdapterForList.Programm
 
     public ArrayList<File> song;
     private Context context;
-    public AdapterForList(Context context,ArrayList<File> song)
+    String[] sName;
+    public AdapterForList(Context context,ArrayList<File> song,String[] sName)
     {
         this.song=song;
         this.context=context;
+        this.sName = sName;
     }
 
     @Override
@@ -38,30 +40,23 @@ public class AdapterForList extends RecyclerView.Adapter<AdapterForList.Programm
     @Override
     public void onBindViewHolder(@NonNull final ProgrammingViewHolder holder, final int position) {
 
-        String title = SongList.item[position];                                              //view objects are bind with data
+        String title = sName[position];                                              //view objects are bind with data
         holder.textView.setText(title);
+
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Log.d("@@@1", String.valueOf(song.get(position)));
-                Log.d("@@@2", String.valueOf(position));
-                Log.d("@@@3", String.valueOf(SongList.item[position]));
 
                 Intent i = new Intent(context,MainActivity.class);
-                 i.putExtra("song",song);
-                 i.putExtra("pos",position);
-
-                 context.startActivity(i);
-
-
-
-
+                i.putExtra("song",song);
+                i.putExtra("pos",position);
+                i.putExtra("songName",sName);
+                context.startActivity(i);
 
                 if(MainActivity.mediaPlayer!=null)
                 {
                     MainActivity.mediaPlayer.stop();//if mediaplayer have a song then it stops as soon as the the next song gets selected
-
                 }
             }
         });

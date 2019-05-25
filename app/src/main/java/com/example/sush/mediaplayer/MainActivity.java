@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if(b!=null)//retrieving values from intent
         {
             position = b.getInt("pos", 0);
-            sName = SongList.item;
+            sName = b.getStringArray("songName");
             mySongs = (ArrayList)b.getParcelableArrayList("song");
         }
         marque.setText(sName[position]);

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class SongList extends AppCompatActivity {
 
     RecyclerView songlist;
-    static String item[];
+    String item[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class SongList extends AppCompatActivity {
         }
 
         songlist.setLayoutManager(new LinearLayoutManager(this));
-        songlist.setAdapter(new AdapterForList(this,mySong));
+        songlist.setAdapter(new AdapterForList(this,mySong,item));
 
     }
 
