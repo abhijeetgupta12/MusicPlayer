@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     public static MediaPlayer mediaPlayer;
     public static Thread thread;
 
+    //Adddddddd
+
     int position;
     String[] sName;
     ArrayList mySongs;//Arraylist<File>
