@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">LetsPlay</string>
+    <string name="play_button">Play!</string>
+    <string name="mysongs">My Songs</string>
+</resources>
