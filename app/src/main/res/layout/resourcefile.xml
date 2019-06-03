@@ -5,7 +5,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:id="@+id/resourceFileId"
-    android:layout_height="wrap_content">
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bgrnd"
+    android:layout_height="80dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp">
 
 
     <TextView
@@ -13,8 +18,9 @@
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:text="hello"
-        android:textSize="20sp"
-        android:layout_marginTop="25dp"
+        android:textColor="#360808"
+        android:textSize="15sp"
+        android:layout_marginTop="22dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 />

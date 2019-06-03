@@ -3,6 +3,7 @@ package com.example.sush.mediaplayer;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,13 +21,12 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button prev,play,next;
+    private Button prev,play,next,repeat;
     private TextView righttext,lefttext,marque;
     private SeekBar seekBar;
     public static MediaPlayer mediaPlayer;
     public static Thread thread;
 
-    //Adddddddd
 
     int position;
     String[] sName;
@@ -40,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("@@@","Hello");
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Now Playing");
 
@@ -57,12 +53,22 @@ public class MainActivity extends AppCompatActivity {
         }
         marque.setText(sName[position]);
         marque.setSelected(true);
-
         Uri u = Uri.parse(mySongs.get(position).toString());
         mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
+
+
         play();
 
 
+
+        repeat = findViewById(R.id.loop);
+        repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mediaPlayer.setLooping(true);
+
+            }
+        });
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri u = Uri.parse(mySongs.get(--position).toString());
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
                 String songname = sName[position];
+
                 marque.setText(songname);
                 play();
             }
@@ -115,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
                 String songname = sName[position];
                 marque.setText(songname);
+
                 play();
             }
         });
@@ -212,46 +220,64 @@ public class MainActivity extends AppCompatActivity {
     public void updateThread()
     {
 
-         thread = new Thread()
+
+        thread = new Thread()
          {
              @Override
              public void run() {
                  try {
+
+
                      while (mediaPlayer != null && mediaPlayer.isPlaying()) {
 
-
-                         thread.sleep(500);
+                         Thread.sleep(500);
                          runOnUiThread(new Runnable() { //use to access the elements of main UI Thread
                              @Override
                              public void run() {
 
-                                 int newPos = mediaPlayer.getCurrentPosition();
+                                 final int newPos = mediaPlayer.getCurrentPosition();
                                  int max = mediaPlayer.getDuration();
                                  seekBar.setMax(max);
                                  seekBar.setProgress(newPos);
+                                 Uri u;
 
-                                 if(String.valueOf(new SimpleDateFormat("mm:ss")
-                                         .format((new Date(mediaPlayer.getCurrentPosition()-30*60*1000))))
-                                         .compareTo(new SimpleDateFormat("mm:ss")
-                                         .format((new Date(mediaPlayer.getDuration()-30*60*1000-1000))))==0)
+                                if(max-newPos<2000)
                                  {
+
                                      mediaPlayer.stop();
-                                     Uri u = Uri.parse(mySongs.get(++position).toString());
+                                     Log.d("qqqq",String.valueOf(newPos));
+                                     if(position==mySongs.size()-1)
+                                     {
+                                          u = Uri.parse(mySongs.get(0).toString());
+                                          position=0;
+                                     }
+                                     else
+                                     {
+                                          u = Uri.parse(mySongs.get(++position).toString());
+                                     }
+
                                      mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
                                      String songname = sName[position];
                                      marque.setText(songname);
                                      play();
+                                     Log.d("abcde",String.valueOf(mediaPlayer.getCurrentPosition()));
+                                     Log.d("abcde123",String.valueOf(mediaPlayer.getDuration()));
 
                                  }
 
 
+
                                  lefttext.setText(String.valueOf(new SimpleDateFormat("mm:ss")
-                                   .format((new Date(mediaPlayer.getCurrentPosition()-30*60*1000)))));
+                                   .format(new Date(mediaPlayer.getCurrentPosition()-30*60*1000))));
+
 
                                                             }
                          });
 
                      }
+
+
+
                      }catch(InterruptedException e){
                          e.printStackTrace();
                      }
